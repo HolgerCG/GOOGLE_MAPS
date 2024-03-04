@@ -2,125 +2,93 @@ package com.example.googlemaps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
-
-public class MainActivity
-        extends AppCompatActivity
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
-
+public class MainActivity extends FragmentActivity
+        implements OnMapReadyCallback {
     GoogleMap mapa;
-    int contador;
-    ArrayList<LatLng> puntos;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        contador = 0;
-        puntos = new ArrayList<LatLng>();
-
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap ) {
         mapa = googleMap;
-        mapa.getUiSettings().setZoomControlsEnabled(true);
         mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        CameraUpdate camUpd1 = CameraUpdateFactory
-                .newLatLngZoom(new LatLng(
-                        -1.012244955648867, -79.46963594864485),15);  //zoom de 20
-
+        mapa.getUiSettings().setZoomControlsEnabled(true);
+        CameraUpdate camUpd1 = CameraUpdateFactory.
+                newLatLngZoom(new LatLng(-1.0126, -79.4696), 20);
         mapa.moveCamera(camUpd1);
-        mapa.setOnMapClickListener(this);
-
-
+        mapa.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null; //
+            }
+            @Override
+            public View getInfoContents(Marker marker) {
+                View view = getLayoutInflater().inflate(R.layout.mensaje, null);
+                ImageView imageView = view.findViewById(R.id.ImgFacultad);
+                TextView titleTextView = view.findViewById(R.id.txtNomFacultad);
+                TextView infoTextView = view.findViewById(R.id.txtinfo);
+                if (marker.getTitle().equals("Facultad de Enfermería")) {
+                    imageView.setImageResource(R.drawable.salud);
+                    titleTextView.setText("Facultad de Ciencias de la Salud");
+                    infoTextView.setText("Formar íntegramente profesionales de la salud con sólidas bases científicas, humanísticas que le permitan actuar ante las necesidades de salud brindando una atención integral demostrando alto compromiso ético en el cuidado de la vida, contribuyendo con su conocimiento al desarrollo de la investigación, ciencia e " +
+                            "innovación mejorando las condiciones de bienestar de la comunidad garantizando el derecho a la salud.");
+                } else if (marker.getTitle().equals("Facultad de Ciencias Empresariales")) {
+                    imageView.setImageResource(R.drawable.empresariales);
+                    titleTextView.setText("Facultad de Ciencias Empresariales");
+                    infoTextView.setText("La Facultad de Ciencias Empresariales de la UTEQ tiene la misión de formar profesionales altamente competitivos en los niveles Técnico, Tecnológico, Pregrado y Postgrado, en el manejo administrativo, " +
+                            "financiero y de gestión en las organizaciones públicas y privadas");
+                } else if (marker.getTitle().equals("Facultad de Ciencias Sociales, Económicas y Financieras")) {
+                    imageView.setImageResource(R.drawable.economicas);
+                    titleTextView.setText("Facultad de Ciencias Sociales, Económicas y Financieras");
+                    infoTextView.setText("La Facultad de Ciencias Sociales Económicas y Financieras forma profesionales comprometidos con la comunidad, con suficientes bases teóricas y prácticas sobre el mejor uso de los recursos planteando soluciones a los problemas" +
+                            " que impiden alcanzar el bienestar económico y financiero de toda la sociedad.");
+                } else if (marker.getTitle().equals("Facultad de Ciencias de la Educación")) {
+                    imageView.setImageResource(R.drawable.educacion);
+                    titleTextView.setText("Facultad de Ciencias de la Educación");
+                    infoTextView.setText("Formar profesionales y académicos competitivos y de excelencia, generando conocimientos, tecnología, servicios de calidad y soluciones a los problemas de la sociedad, sustentada en principios.");
+                }
+                return view;
+            }
+        });
+        LatLng FCsalud = new LatLng(-1.0128590472579106, -79.46936342524782);
+        mapa.addMarker(new MarkerOptions()
+                .position(FCsalud)
+                .title("Facultad de Ciencias de la Salud"));
+        LatLng FCempresariales = new LatLng(-1.0122690534315153, -79.47022709657386);
+        mapa.addMarker(new MarkerOptions()
+                .position(FCempresariales)
+                .title("Facultad de Ciencias Empresariales"));
+        LatLng FCeconomicas = new LatLng(-1.0125908682592284, -79.47052213957345);
+        mapa.addMarker(new MarkerOptions()
+                .position(FCeconomicas)
+                .title("Facultad de Ciencias Sociales, Económicas y Financieras"));
+        LatLng FCeduacion = new LatLng(-1.0125694139383714, -79.47101566604547);
+        mapa.addMarker(new MarkerOptions()
+                .position(FCeduacion)
+                .title("Facultad de Ciencias de la Educación"));
     }
 
-    @Override
-    public void onMapClick(@NonNull LatLng latLng) {
-        Projection proj = mapa.getProjection();
-        Point coord = proj.toScreenLocation(latLng);
-
-        TextView lblLatitud = findViewById(R.id.lblLatitude);
-        lblLatitud.setText(String.format("%.4f",latLng.latitude));
-
-        TextView lblLongitud = findViewById(R.id.lblLongitud);
-        lblLongitud.setText(String.format("%.4f",latLng.longitude));
-
-        mapa.addMarker(new MarkerOptions().position(latLng));
-
-        mapa.addMarker(new MarkerOptions().position(latLng)
-                .title("Marcador"));
-
-        contador = contador + 1;
-        puntos.add(latLng);
-        if(contador == 4){
-            PolylineOptions lineas = new PolylineOptions()
-                    .add(puntos.get(0))
-                    .add(puntos.get(1))
-                    .add(puntos.get(2))
-                    .add(puntos.get(3))
-                    .add(puntos.get(0));
-            lineas.width(8);
-            lineas.color(Color.RED);
-
-            mapa.addPolyline(lineas);
-            contador = 0;
-            puntos.clear();
-        }
-
-    }
-
-    public void PintarRectanguloUTEQ(View view){
-
-        mapa.addMarker(new MarkerOptions().position(
-                new LatLng(-1.011888252898674, -79.47173551586393))
-                .title("Punto 1"));
-        mapa.addMarker(new MarkerOptions().position(
-                new LatLng(-1.0130548316341261, -79.47184012201102))
-                .title("Punto 2"));
-        mapa.addMarker(new MarkerOptions().position(
-                new LatLng(-1.0121281551986825, -79.46717704406673))
-                .title("Punto 3"));
-        mapa.addMarker(new MarkerOptions().position(
-                new LatLng(-1.013237668145548, -79.46727628430006))
-                .title("Punto 4"));
-
-
-
-        PolylineOptions lineas = new PolylineOptions()
-                .add(new LatLng(-1.011888252898674, -79.47173551586393))
-                .add(new LatLng(-1.0130548316341261, -79.47184012201102))
-                .add(new LatLng(-1.0121281551986825, -79.46717704406673))
-                .add(new LatLng(-1.013237668145548, -79.46727628430006))
-                .add(new LatLng(-1.011888252898674, -79.47173551586393));
-
-        lineas.width(8);
-        lineas.color(Color.RED);
-
-        mapa.addPolyline(lineas);
-    }
 }

@@ -9,59 +9,13 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="408dp"
-        android:layout_height="669dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintVertical_bias="1.0"
-        tools:context=".MainActivity" />
-
-    <TextView
-        android:id="@+id/lblPosition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Posicion:"
-        app:layout_constraintBottom_toTopOf="@+id/map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lblLatitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:text="Latitud"
-        app:layout_constraintBottom_toBottomOf="@+id/lblPosition"
-        app:layout_constraintStart_toEndOf="@+id/lblPosition"
-        app:layout_constraintTop_toTopOf="@+id/lblPosition" />
-
-    <TextView
-        android:id="@+id/lblLongitud"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:text="Longitud"
-        app:layout_constraintBottom_toBottomOf="@+id/lblLatitude"
-        app:layout_constraintStart_toEndOf="@+id/lblLatitude"
-        app:layout_constraintTop_toTopOf="@+id/lblLatitude" />
-
-    <Button
-        android:id="@+id/buttonUTEQ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:onClick="PintarRectanguloUTEQ"
-        android:text="UTEQ"
-        app:icon="@android:drawable/ic_dialog_map"
-        app:layout_constraintBottom_toBottomOf="@+id/lblLongitud"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lblLongitud"
-        app:layout_constraintTop_toTopOf="@+id/lblLongitud" />
-
+        tools:context=".MainActivity"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
